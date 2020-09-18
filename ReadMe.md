@@ -10,6 +10,8 @@ poor signal-to-noise ratio. With this tool, the user can manually annotate
 The average signal of the individual spots is then calculated. By comparing integrated intensity of the hotpsots and individual spots, we approximate how many individual
 spots are in these local aggregations. 
 
+<img src="https://raw.githubusercontent.com/muellerflorian/hotspot/master/docs/hotspot-screenshot.png" width="600px"></img>
+
 Tool requires to open an image pair (e.g. RNA and protein image) side-by-side, but only one of the images will be quantififed. This can be useful when analyzing protein data (e.g. for translation where the presence of RNA can be helpful to identify hotspots). However, you can also simply open the same image twice, e.g. if you want to analyze transcriptinal activity from smFISH or MS2
 
 # System Requirements
