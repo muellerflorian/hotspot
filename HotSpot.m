@@ -22,7 +22,7 @@ function varargout = HotSpot(varargin)
 
 % Edit the above text to modify the response to help HotSpot
 
-% Last Modified by GUIDE v2.5 14-Sep-2020 14:49:23
+% Last Modified by GUIDE v2.5 21-Sep-2020 15:55:13
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -1233,10 +1233,9 @@ else
         tline = fgetl(fid);
         
         % Read one more line if this is a newer file containing also the intensity values
-        if contains(tline,'INT')
+        if ischar(tline) && contains(tline,'INT')
             tline = fgetl(fid);
         end
-        
     end    
 end
    
@@ -1463,7 +1462,7 @@ function handles = plot_image_hs(hObject, eventdata, handles)
 
 %- Get track and current position
 ind_frame = str2double(get(handles.text_frame,'String'));
-
+show_proteins = get(handles.checkbox_show_proteins,'Value');
 axes(handles.axes_protein); 
 v = axis(handles.axes_protein);
 
@@ -1473,7 +1472,7 @@ x_trans_all = []; y_trans_all = [];
 x_prot = [];      y_prot = [];
     
 ind_sel  = get(handles.listbox_translation,'Value');
-
+% checkbox_show_proteins
 if ~isempty(handles.translation)
     if ~isempty(handles.translation(ind_sel).x)
 
@@ -1484,7 +1483,7 @@ if ~isempty(handles.translation)
         y_trans_all = [handles.translation.y];
         
         
-        if ~isempty(handles.translation(ind_sel).x_prot)
+        if show_proteins && ~isempty(handles.translation(ind_sel).x_prot)
             x_prot = handles.translation(ind_sel).x_prot;
             y_prot = handles.translation(ind_sel).y_prot;
         end
@@ -1516,7 +1515,9 @@ if ~isempty(handles.img_prot.raw)
         plot(x_trans,y_trans,'or')
         
         %plot(handles.x_prot_all,handles.y_prot_all,'y+')
-        plot(x_prot,y_prot,'g+')
+        if show_proteins && ~isempty(handles.translation(ind_sel).x_prot)
+            plot(x_prot,y_prot,'g+')
+        end
         
     hold off
     
@@ -1725,6 +1726,10 @@ set(handles.text_contr_prot_max,'String',num2str(round(contr_max)));
 handles = plot_image(hObject, eventdata, handles);
 guidata(hObject, handles);
 
+% --- Executes on button press in checkbox_show_proteins.
+function checkbox_show_proteins_Callback(hObject, eventdata, handles)
+handles = plot_image_hs(hObject, eventdata, handles);
+guidata(hObject, handles);
 
 %==========================================================================
 % Not used
@@ -1781,3 +1786,6 @@ function listbox_cl_cells_CreateFcn(hObject, eventdata, handles)
 if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
     set(hObject,'BackgroundColor','white');
 end
+
+
+
